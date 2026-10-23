@@ -8,7 +8,6 @@ use crate::{data::Data, error::BotResult, services::redis};
 
 #[derive(Serialize)]
 struct Msg {
-	id: u64,
 	name: String,
 	msg: String,
 }
@@ -20,12 +19,10 @@ pub async fn on_message(_ctx: &Ctx, data: &Arc<Data>, message: &Message) -> BotR
 
 	let author = &message.author;
 
-	let id = author.id.get();
 	let name = author.name.clone();
 	let contents = message.content.clone();
 
 	let msg = Msg {
-		id,
 		name,
 		msg: contents,
 	};

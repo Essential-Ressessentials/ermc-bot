@@ -1,6 +1,7 @@
 mod advancement;
 mod chat;
 mod death;
+mod jl;
 mod send;
 mod sleep;
 
@@ -29,6 +30,8 @@ pub async fn receive_webhook(ctx: Arc<TaskCtx>) -> BotResult {
 			.unwrap();
 
 		match subchannel {
+			"join" => jl::join_webhook(ctx.clone(), &payload).await?,
+			"leave" => jl::leave_webhook(ctx.clone(), &payload).await?,
 			"chat" => chat::chat_webhook(ctx.clone(), &payload).await?,
 			"sleep" => sleep::sleep_webhook(ctx.clone(), &payload).await?,
 			"death" => death::death_webhook(ctx.clone(), &payload).await?,

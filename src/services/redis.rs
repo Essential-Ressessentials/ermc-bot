@@ -66,10 +66,10 @@ mod tests {
 		let payload = "{
 			\"ign\": \"THMIGU\",
 			\"uuid\": \"fd7f416a-04f9-4849-851b-c4c4cfbe1ac1\",
-			\"name\": \"nothing\"
+			\"msg\": \"THMIGU blwwo up\"
 		}";
 
-		let subscribers = redis_pub(data, "ermc:webhook:adv", payload)
+		let subscribers = redis_pub(data, "ermc:webhook:death", payload)
 			.await
 			.unwrap();
 		println!("{}", subscribers);

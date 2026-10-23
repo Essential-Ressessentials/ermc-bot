@@ -3,7 +3,7 @@ use poise::{
 	CreateReply,
 	serenity_prelude::{
 		ComponentInteraction, CreateEmbed, CreateEmbedAuthor, CreateInteractionResponse,
-		CreateInteractionResponseMessage, CreateMessage, EmbedAuthor, Mentionable, Message, UserId,
+		CreateInteractionResponseMessage, CreateMessage, Mentionable, Message, UserId,
 		colours::branding::WHITE,
 	},
 };

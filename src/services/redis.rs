@@ -47,3 +47,31 @@ pub async fn redis_pub(data: Arc<Data>, channel: &str, message: &str) -> BotResu
 
 	Ok(subscribers)
 }
+
+#[cfg(test)]
+mod tests {
+	use crate::utils::config::Config;
+
+	use super::*;
+
+	#[tokio::test]
+	async fn test() {
+		let config = Config::load().unwrap();
+		let data = Arc::new(
+			Data::new(config)
+				.await
+				.unwrap(),
+		);
+
+		let payload = "{
+			\"ign\": \"THMIGU\",
+			\"uuid\": \"fd7f416a-04f9-4849-851b-c4c4cfbe1ac1\",
+			\"name\": \"nothing\"
+		}";
+
+		let subscribers = redis_pub(data, "ermc:webhook:adv", payload)
+			.await
+			.unwrap();
+		println!("{}", subscribers);
+	}
+}

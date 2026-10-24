@@ -19,6 +19,10 @@ pub async fn on_message(_ctx: &Ctx, data: &Arc<Data>, message: &Message) -> BotR
 
 	let author = &message.author;
 
+	if author.bot {
+		return Ok(());
+	}
+
 	let name = author.name.clone();
 	let contents = message.content.clone();
 

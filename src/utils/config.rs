@@ -5,7 +5,7 @@ use serde::Deserialize;
 
 use crate::error::BotResult;
 
-const CONFIG_PATH: &str = "config.toml";
+const CONFIG_PATH: &str = "ermc/config.toml";
 
 #[derive(Deserialize)]
 pub struct Config {

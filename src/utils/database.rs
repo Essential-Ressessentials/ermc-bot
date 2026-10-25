@@ -3,7 +3,7 @@ use rusqlite::{Connection, OptionalExtension, params};
 
 use crate::error::BotResult;
 
-const DATABASE_PATH: &str = "data.db";
+const DATABASE_PATH: &str = "ermc/data.db";
 
 fn get_connection() -> BotResult<Connection> {
 	Connection::open(DATABASE_PATH).context(format!("Failed to open {}", DATABASE_PATH))

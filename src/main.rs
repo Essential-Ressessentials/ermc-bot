@@ -15,7 +15,7 @@ use crate::{
 	commands::commands,
 	error::{BotResult, on_error},
 	events::event_handler,
-	utils::config::Config,
+	utils::{config::Config, sigterm},
 };
 
 #[tokio::main]
@@ -41,10 +41,17 @@ async fn main() -> BotResult {
 		.framework(framework)
 		.await
 		.context("Failed to initialize client")?;
-	client
-		.start()
-		.await
-		.context("Failed to start client")?;
+
+	let shard_manager = client.shard_manager.clone();
+
+	tokio::select! {
+		result = client.start() => {
+			result.context("Failed to start client")?;
+		}
+		_ = sigterm::sigterm_signal() => {
+			shard_manager.shutdown_all().await;
+		}
+	}
 
 	println!("Shutting down");
 

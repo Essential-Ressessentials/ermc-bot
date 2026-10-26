@@ -39,7 +39,8 @@ pub async fn setup(
 		http: ctx.http.clone(),
 	});
 
-	tokio::spawn(tasks::webhook::receive_webhook(task_ctx));
+	tokio::spawn(tasks::webhook::receive_webhook(task_ctx.clone()));
+	tokio::spawn(tasks::rest::start_rest(task_ctx.clone()));
 
 	Ok(data)
 }

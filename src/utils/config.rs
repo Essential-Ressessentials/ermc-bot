@@ -11,6 +11,7 @@ const CONFIG_PATH: &str = "ermc/config.toml";
 pub struct Config {
 	pub discord: DiscordConfig,
 	pub redis: RedisConfig,
+	pub rest: RESTConfig,
 }
 
 #[derive(Deserialize)]
@@ -24,6 +25,12 @@ pub struct DiscordConfig {
 
 #[derive(Deserialize)]
 pub struct RedisConfig {
+	pub ip: String,
+	pub port: u32,
+}
+
+#[derive(Deserialize)]
+pub struct RESTConfig {
 	pub ip: String,
 	pub port: u32,
 }

@@ -118,6 +118,18 @@ pub fn get_player(discord_id: u64) -> BotResult<Option<(String, String)>> {
 	Ok(player)
 }
 
+pub fn check_uuid(uuid: &str) -> BotResult<bool> {
+	let db = get_connection()?;
+
+	let exists: bool = db
+		.query_row("SELECT EXISTS(SELECT 1 FROM players WHERE uuid = ?1)", params![uuid], |row| {
+			row.get(0)
+		})
+		.context("Failed to check for UUID")?;
+
+	Ok(exists)
+}
+
 pub fn check_requests(discord_id: u64) -> BotResult<bool> {
 	let db = get_connection()?;
 

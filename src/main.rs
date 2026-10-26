@@ -29,6 +29,10 @@ async fn main() -> BotResult {
 		commands: commands(),
 		event_handler: |ctx, event, _framework, data| Box::pin(event_handler(ctx, event, data)),
 		on_error: |err| Box::pin(on_error(err)),
+		prefix_options: poise::PrefixFrameworkOptions {
+			mention_as_prefix: false,
+			..Default::default()
+		},
 		..Default::default()
 	};
 
@@ -45,7 +49,7 @@ async fn main() -> BotResult {
 	#[cfg(unix)]
 	{
 		use crate::utils::sigterm;
-		
+
 		let shard_manager = client.shard_manager.clone();
 
 		tokio::select! {

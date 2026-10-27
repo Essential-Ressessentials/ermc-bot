@@ -26,17 +26,20 @@ pub async fn start_status(ctx: Arc<TaskCtx>) -> BotResult {
 	let server_ip = &config.minecraft.server_ip;
 	let url = format!("https://api.mcsrvstat.us/3/{server_ip}");
 
-	let mut interval = time::interval(Duration::from_secs(10));
+	let mut interval = time::interval(Duration::from_mins(1));
 
 	loop {
 		interval.tick().await;
 
-		let res = client
+		let Ok(res) = client
 			.get(&url)
 			.header("User-Agent", format!("ermc-bot/{}", env!("CARGO_PKG_VERSION")))
 			.send()
 			.await
-			.context("Failed to retrieve server stats")?;
+		else {
+			eprintln!("Failed to retrieve server stats");
+			continue;
+		};
 
 		let stats = res
 			.json::<ServerStats>()

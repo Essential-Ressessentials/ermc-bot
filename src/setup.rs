@@ -37,10 +37,9 @@ pub async fn setup(
 	let task_ctx = Arc::new(TaskCtx {
 		data: data.clone(),
 		http: ctx.http.clone(),
+		shard: ctx.shard.clone(),
 	});
-
-	tokio::spawn(tasks::webhook::receive_webhook(task_ctx.clone()));
-	tokio::spawn(tasks::rest::start_rest(task_ctx.clone()));
+	tasks::run_tasks(task_ctx);
 
 	Ok(data)
 }

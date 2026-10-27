@@ -1,6 +1,5 @@
 use std::{sync::Arc, time::Duration};
 
-use anyhow::Context;
 use poise::serenity_prelude::{ActivityData, OnlineStatus};
 use serde::Deserialize;
 use tokio::time;
@@ -23,10 +22,11 @@ pub async fn start_status(ctx: Arc<TaskCtx>) -> BotResult {
 	let client = &ctx.data.http_client;
 	let config = &ctx.data.config;
 
-	let server_ip = &config.minecraft.server_ip;
-	let url = format!("https://api.mcsrvstat.us/3/{server_ip}");
+	let ip = &config.minecraft.ip;
+	let port = config.minecraft.port;
+	let url = format!("https://api.mcquery.net/java?target={ip}&port={port}");
 
-	let mut interval = time::interval(Duration::from_mins(1));
+	let mut interval = time::interval(Duration::from_secs(30));
 
 	loop {
 		interval.tick().await;
@@ -41,10 +41,14 @@ pub async fn start_status(ctx: Arc<TaskCtx>) -> BotResult {
 			continue;
 		};
 
-		let stats = res
+		let Ok(stats) = res
 			.json::<ServerStats>()
 			.await
-			.context("Failed to deserialize JSON")?;
+		else {
+			eprintln!("Failed to deserialize JSON");
+			continue;
+		};
+
 		let online = stats.players.online;
 
 		let status = format!(

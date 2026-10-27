@@ -26,7 +26,8 @@ pub struct DiscordConfig {
 
 #[derive(Deserialize)]
 pub struct MinecraftConfig {
-	pub server_ip: String,
+	pub ip: String,
+	pub port: u32,
 }
 
 #[derive(Deserialize)]

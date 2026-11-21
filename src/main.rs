@@ -11,12 +11,7 @@ mod utils;
 use anyhow::Context;
 use poise::serenity_prelude as serenity;
 
-use crate::{
-	commands::commands,
-	error::{BotResult, on_error},
-	events::event_handler,
-	utils::config::Config,
-};
+use crate::{commands::commands, error::BotResult, events::event_handler, utils::config::Config};
 
 #[tokio::main]
 async fn main() -> BotResult {
@@ -28,7 +23,7 @@ async fn main() -> BotResult {
 	let framework_options = poise::FrameworkOptions {
 		commands: commands(),
 		event_handler: |ctx, event, _framework, data| Box::pin(event_handler(ctx, event, data)),
-		on_error: |err| Box::pin(on_error(err)),
+		on_error: |err| Box::pin(error::on_error(err)),
 		prefix_options: poise::PrefixFrameworkOptions {
 			mention_as_prefix: false,
 			..Default::default()
